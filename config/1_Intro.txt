@@ -29,6 +29,7 @@ INCLUDE Simulation.txt
 
 # make sure the controller is off
 [QuadControlParams]
+Mass = 0.5
 kpPosXY = 0
 kpPosZ = 0
 kpVelXY = 0

@@ -129,9 +129,6 @@ There are a handful of keyboard / mouse commands to help with the simulator itse
  - R - reset simulation
  - Space - pause simulation
 
-
-
-
 ### Testing it Out ###
 
 When you run the simulator, you'll notice your quad is falling straight down.  This is due to the fact that the thrusts are simply being set to:
@@ -172,7 +169,7 @@ To accomplish this, you will:
 
 1. Implement body rate control
 
- - implement the code in the function `GenerateMotorCommands()`
+ - implement the code in the function `GenerateMotorCommands()` (Done)
  - implement the code in the function `BodyRateControl()`
  - Tune `kpPQR` in `QuadControlParams.txt` to get the vehicle to stop spinning quickly but not overshoot
 
@@ -241,7 +238,6 @@ Now that we have all the working parts of a controller, you will put it all toge
 
 How well is your drone able to follow the trajectory?  It is able to hold to the path fairly well?
 
-
 ### Extra Challenge 1 (Optional) ###
 
 You will notice that initially these two trajectories are the same. Let's work on improving some performance of the trajectory itself.
@@ -263,7 +259,6 @@ With the two different trajectories, your drones' motions should look like this:
 For flying a trajectory, is there a way to provide even more information for even better tracking?
 
 How about trying to fly this trajectory as quickly as possible (but within following threshold)!
-
 
 ## Evaluation ##
 
