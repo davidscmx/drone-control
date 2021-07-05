@@ -162,9 +162,10 @@ V3F QuadControl::RollPitchControl(V3F accelCmd, Quaternion<float> attitude, floa
   return pqrCmd;
 }
 
-float QuadControl::AltitudeControl(float posZCmd, float velZCmd, float posZ, float velZ, Quaternion<float> attitude, float accelZCmd, float dt)
+float QuadControl::AltitudeControl(float posZCmd, float velZCmd, float posZ, float velZ,
+                                   Quaternion<float> attitude, float accelZCmd, float dt)
 {
-  // Calculate desired quad thrust based on altitude setpoint, actual altitude,
+  //   Calculate desired quad thrust based on altitude setpoint, actual altitude,
   //   vertical velocity setpoint, actual vertical velocity, and a vertical
   //   acceleration feed-forward command
   // INPUTS:
@@ -199,7 +200,7 @@ float QuadControl::AltitudeControl(float posZCmd, float velZCmd, float posZ, flo
 // returns a desired acceleration in global frame
 V3F QuadControl::LateralPositionControl(V3F posCmd, V3F velCmd, V3F pos, V3F vel, V3F accelCmdFF)
 {
-  // Calculate a desired horizontal acceleration based on
+  //  Calculate a desired horizontal acceleration based on
   //  desired lateral position/velocity/acceleration and current pose
   // INPUTS:
   //   posCmd: desired position, in NED [m]
@@ -270,7 +271,8 @@ float QuadControl::YawControl(float yawCmd, float yaw)
 
   float yawRateCmd=0;
   float yawCmdToPi = 0;
-  if ( yawCmd > 0 ) {
+  if ( yawCmd > 0 )
+  {
     yawCmdToPi = fmodf(yawCmd, 2 * F_PI);
   }
   else

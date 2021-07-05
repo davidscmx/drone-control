@@ -167,21 +167,48 @@ First, you will implement the body rate and roll / pitch control.  For the simul
 
 To accomplish this, you will:
 
-1. Implement body rate control
+1. Implemented body rate control
 
- - implement the code in the function `GenerateMotorCommands()` (Done)
+ - implement the code in the function `GenerateMotorCommands()`
+
+    As opposed to the Jupyter notebook where we get angular velocities as input,
+    for the function `GenerateMotorCommands()` we get the desired total thrust and
+    the desired 3 moments. Using the knowledge of the quad kinematics and the different
+    rotation we build the following equation.
+
+    ```
+    Equation to solve
+
+    F1 + F2 + F3 + F4 = t4
+
+    F1 + F3 - F2 - F4 = Mx / l = t1
+
+    F1 + F2 - F3 - F4 = My / l = t2
+
+    F1 - F2 + F3 - F4 = Mz / kappa = t3
+    ```
+
+    After solving for F1, F2, F3, and F4 we can then set the desired thrusts, while taking care
+    the stay within a certain range with the `CONSTRAIN` macro.
+
  - implement the code in the function `BodyRateControl()`
  - Tune `kpPQR` in `QuadControlParams.txt` to get the vehicle to stop spinning quickly but not overshoot
+
+   A proportional controler is implemented for the body rate control. After implementing this function,
+   the gain `kpPQR` is tuned until it achieves compliance with `Scenario2`
 
 If successful, you should see the rotation of the vehicle about roll (omega.x) get controlled to 0 while other rates remain zero.  Note that the vehicle will keep flying off quite quickly, since the angle is not yet being controlled back to 0.  Also note that some overshoot will happen due to motor dynamics!.
 
 If you come back to this step after the next step, you can try tuning just the body rate omega (without the outside angle controller) by setting `QuadControlParams.kpBank = 0`.
 
-2. Implement roll / pitch control
-We won't be worrying about yaw just yet.
+2. Implement roll / pitch control (We will take care of the Yaw controller later)
 
  - implement the code in the function `RollPitchControl()`
+   The code here comes from the  the lectures. The Euler's equation is only used partially
+   since here we are only interested in the `p` and `q` rotation rates.
+
  - Tune `kpBank` in `QuadControlParams.txt` to minimize settling time but avoid too much overshoot
+   The `kpBank` constant is tuned until we reach the desired `t_set` time.
 
 If successful you should now see the quad level itself (as shown below), though it’ll still be flying away slowly since we’re not controlling velocity/position!  You should also see the vehicle angle (Roll) get controlled to 0.
 
@@ -189,19 +216,28 @@ If successful you should now see the quad level itself (as shown below), though 
 <img src="animations/scenario2.gif" width="500"/>
 </p>
 
-
 ### Position/velocity and yaw angle control (scenario 3) ###
 
 Next, you will implement the position, altitude and yaw control for your quad.  For the simulation, you will use `Scenario 3`.  This will create 2 identical quads, one offset from its target point (but initialized with yaw = 0) and second offset from target point but yaw = 45 degrees.
 
  - implement the code in the function `LateralPositionControl()`
+   Here we input the desired lateral position and velocity in the (x,y). We take care to clip the velocities and accelerations such that they do not execeed the allow values. Then we applied the proportional error gains to the velocity and the accelerations. The parameters
+   are tuned with the provided guidelines and until they show satisfactory results.
+
  - implement the code in the function `AltitudeControl()`
+   For the altitute control we have a PI (Proportional/Integral). We add the errors to the
+   class variable `integratedAltitudeError`.
+
  - tune parameters `kpPosZ` and `kpPosZ`
  - tune parameters `kpVelXY` and `kpVelZ`
 
 If successful, the quads should be going to their destination points and tracking error should be going down (as shown below). However, one quad remains rotated in yaw.
 
  - implement the code in the function `YawControl()`
+
+ The `YawControl()` is a the simplest of all, and we only need to take care of unwrap the
+ radian angle measure.
+
  - tune parameters `kpYaw` and the 3rd (z) component of `kpPQR`
 
 Tune position control for settling time. Don’t try to tune yaw control too tightly, as yaw control requires a lot of control authority from a quadcopter and can really affect other degrees of freedom.  This is why you often see quadcopters with tilted motors, better yaw authority!
