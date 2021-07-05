@@ -22,8 +22,8 @@ maxMotorThrust = 4.5
 
 # Position control gains
 kpPosXY = 30
-kpPosZ = 25
-KiPosZ = 35
+kpPosZ = 50
+KiPosZ = 40
 
 # Hint: For a second order system, such as the one for this quadcopter,
 # the velocity gain (kpVelXY and kpVelZ) should be at least ~3-4 times greater
@@ -31,14 +31,14 @@ KiPosZ = 35
 
 # Velocity control gains
 kpVelXY = 12
-kpVelZ = 9
+kpVelZ = 10
 
 # Angle control gains
-kpBank = 10
-kpYaw = 20
+kpBank = 15
+kpYaw = 2
 
 # Angle rate gains
-kpPQR = 100, 90, 3
+kpPQR = 54, 95, 3
 
 # limits
 maxAscentRate = 5

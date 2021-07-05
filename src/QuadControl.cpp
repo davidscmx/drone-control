@@ -140,16 +140,17 @@ V3F QuadControl::RollPitchControl(V3F accelCmd, Quaternion<float> attitude, floa
 
   if ( collThrustCmd > 0 ) {
     float c = - collThrustCmd / mass;
-    float b_x_cmd = CONSTRAIN(accelCmd.x / c, -maxTiltAngle, maxTiltAngle);
-    float b_x_err = b_x_cmd - R(0,2);
-    float b_x_pTerm = kpBank * b_x_err;
+    float b_x, b_y;
+    float b_x_d, b_y_d;
 
-    float b_y_cmd = CONSTRAIN(accelCmd.y / c, -maxTiltAngle, maxTiltAngle);
-    float b_y_err = b_y_cmd - R(1,2);
-    float b_y_pTerm = kpBank * b_y_err;
+    b_x = CONSTRAIN((accelCmd.x / c), -sin(maxTiltAngle), sin(maxTiltAngle));
+    b_y = CONSTRAIN((accelCmd.y / c), -sin(maxTiltAngle), sin(maxTiltAngle));
 
-    pqrCmd.x = (R(1,0) * b_x_pTerm - R(0,0) * b_y_pTerm) / R(2,2);
-    pqrCmd.y = (R(1,1) * b_x_pTerm - R(0,1) * b_y_pTerm) / R(2,2);
+    b_x_d = kpBank * (b_x - R(0,2));
+    b_y_d = kpBank * (b_y - R(1,2));
+
+    pqrCmd.x = (R(1,0) * b_x_d - R(0,0) * b_y_d) / R(2,2);
+    pqrCmd.y = (R(1,1) * b_x_d - R(0,1) * b_y_d) / R(2,2);
   }
   else
   {
@@ -157,6 +158,7 @@ V3F QuadControl::RollPitchControl(V3F accelCmd, Quaternion<float> attitude, floa
     pqrCmd.y = 0.0;
   }
 
+  pqrCmd.z = 0;
   pqrCmd.z = 0;
 
   return pqrCmd;
